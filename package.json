@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "docker build -f Dockerfile.dev . -t react-frontend:latest && docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app react-frontend:latest",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
