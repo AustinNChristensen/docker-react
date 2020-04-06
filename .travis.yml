@@ -1,9 +1,21 @@
 sudo: required
 services:
     - docker
+env:
+    - CI=true
     
 before_install:
     - docker build -t austinnchristensen/docker-react -f Dockerfile.dev .
 
 script:
-    - docker run -e CI=true austinnchristensen/docker-react npm run test
+    - docker run -e CI=true austinnchristensen/docker-react npm run test -- --coverage
+
+before_deploy:
+    - npm install netlify-cli -g
+
+deploy:
+  provider: script
+  script: netlify deploy -s $NETLIFY_SITE_ID -t $NETLIFY_ACCESS_TOKEN -p /usr/share/nginx/html
+  skip_cleanup: true
+  on:
+    branch: master
